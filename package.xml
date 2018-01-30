@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package>
+  <name>rospy_utils</name>
+  <version>0.0.1</version>
+  <description>Small utility python nodes</description>
+
+  <author email="zhan0314@gmail.com">Yanfu Zhang</author>
+  <maintainer email="zhan0314@gmail.com">Yanfu Zhang</maintainer>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export></export>
+</package>

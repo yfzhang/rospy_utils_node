@@ -1,0 +1,46 @@
+<launch>
+  <arg name="rviz" default="true"/>
+
+  <node pkg="tf" type="static_transform_publisher" name="worldoffset" args="0 0 0 -1.570796327 3.141592654 0 ned_origin mesh 1000" />
+  <node pkg="tf" type="static_transform_publisher" name="world_view_offset" args="0 0 0 0 3.14159 0 world world_view 1000" />
+
+  <node pkg="mini_aacus_sim_lidar_node" type="mini_aacus_sim_lidar_node" name="lidar_sim_node" output="screen">
+    <param name="laser_frame_id" value="/base_link" />
+    <param name="world_frame_id" value="/world" />
+    <param name="mesh_frame_id" value="/mesh" />
+    <param name="drone_frame_id" value="/base_link" />
+    <param name="box_list_topic_name" value="box_list" />
+    <param name="boxes_vis_topic_name" value="box_list_vis" />
+    <param name="mesh_file_name" value="gascola_colored_utm_trim_2_1_m_mesh_without_texture_reduced.3ds" />
+    <param name="mesh_file_path" value="$(find mini_aacus_launch)/config/mesh/gascola/" />
+    <param name="mesh_vis_topic_name" value="mesh_vis" />
+    <param name="lidar_hits_topic_name" value="hits" />
+    <param name="lidar_misses_topic_name" value="misses" />
+    <param name="enable_point_cloud_mode" value="true" />
+    <param name="point_cloud_name" value="$(find mini_aacus_launch)/config/point_cloud/gascola/gascola_colored_utm_trim_2_1_m.pcd" />
+    <param name="point_cloud_distance" value="100" />
+    <param name="point_cloud_vis_topic_name" value="point_cloud_vis" />
+    <param name="lidar_update_frequency" value="10" />
+    <param name="visualization_frequency" value="2" />
+  </node>
+
+  <include file="$(find mac_motion_planner)/launch/test_dynamics_constraints.launch"/>
+
+  <include file="$(find mac_fcs)/launch/mac_fcs_sim.launch">
+    <arg name="initial_x"       value="-18.0"/>
+    <arg name="initial_y"       value="-10.0"/>
+    <arg name="initial_z"       value="0.0"/>
+    <arg name="initial_heading" value="-140"/>
+
+
+    <arg name="world_latitude_deg"  value="40.457287" />
+    <arg name="world_longitude_deg" value="-79.782866" />
+    <arg name="world_altitude_m"    value="302" />
+  </include>
+  
+
+  <group if="$(arg rviz)">
+    <node launch-prefix="nice" pkg="rviz" type="rviz" name="rviz"
+          args="-d $(find filming_launch)/rviz/gascola_sim.rviz"/>
+  </group>
+</launch>
